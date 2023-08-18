@@ -1,0 +1,19 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node name="/com/trollech/examples/appInterface">
+        <interface name="org.example.Examples.appInterface">
+                <method name="play">
+                <arg direction="in" type="s" name="song"/>
+                </method>
+                <method name="pause">
+                </method>
+                <method name="nextsong">
+                <arg direction="in" type="s" name="songPath"/>
+
+                </method>
+                <method name="prevsong">
+
+                 <arg type="s" name="songPath" direction="in"/>
+                </method>
+                <method name="stop"/>
+        </interface>
+</node>
