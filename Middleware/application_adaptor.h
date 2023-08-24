@@ -33,10 +33,12 @@ class AppInterfaceAdaptor: public QDBusAbstractAdaptor
                                        "    <method name=\"play\">\n"
                                        "    <arg direction=\"in\" type=\"s\" name=\"song\"/>\n"
                                        "    </method>\n"
-                                       "    <method name=\"pause\"/>\n"
-                                      "    <method name=\"nextsong\"/>\n"
+                                       "    <method name=\"pause\">\n"
+                                       "   <arg direction=\"in\" type=\"s\" name=\"song\"/>\n"
+                                       "    </method>\n"
+                                       "    <method name=\"nextsong\"/>\n"
                                        "    <arg direction=\"in\" type=\"s\" name=\"song\"/>\n"
-                                        "   <arg direction=\"in\" type=\"i\" name=\"currentIndex\"/>\n"
+                                       "   <arg direction=\"in\" type=\"i\" name=\"currentIndex\"/>\n"
                                        "    </method>\n"
                                        "    <method name=\"prevsong\"/>\n"
                                        "    <arg direction=\"in\" type=\"s\" name=\"song\"/>\n"
@@ -52,7 +54,7 @@ public:
 public: // PROPERTIES
 public Q_SLOTS: // METHODS
     void play(QString song);
-    void pause();
+    void pause(QString song);
     void nextsong(QString song);
     void prevsong(QString song);
     void stop();

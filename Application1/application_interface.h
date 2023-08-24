@@ -39,9 +39,10 @@ public Q_SLOTS: // METHODS
         return asyncCallWithArgumentList(QStringLiteral("play"), argumentList);
     }
 
-    inline QDBusPendingReply<> pause()
+    inline QDBusPendingReply<> pause(QString &song)
     {
         QList<QVariant> argumentList;
+        argumentList << QVariant::fromValue(song);
         return asyncCallWithArgumentList(QStringLiteral("pause"), argumentList);
     }
 

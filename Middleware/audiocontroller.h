@@ -2,7 +2,7 @@
 #define AUDIOCONTROLLER_H
 
 #include <QObject>
-// #include <gst/gst.h>
+ #include <gst/gst.h>
 //#include <QDBusAbstractAdaptor>
 #include <audiocontroller.h>
 #include <QMediaPlayer>
@@ -24,7 +24,7 @@ public:
     // AudioPlayerAdaptor(AudioController *controller);
 public slots:
     void play(QString song);
-    void pause();
+    void pause(QString song);
     void nextsong(QString song);
     void prevsong(QString song);
     void stop();
@@ -32,8 +32,12 @@ signals:
 
 private:
     QMediaPlayer mediaPlayer;
-
+    GstElement *pipeline = nullptr;
+    GstElement *playbin = nullptr;
+    gint64 playbackPosition = -1;
     int currentIndex;
+    bool isPlaying = true;
+
 
 };
 

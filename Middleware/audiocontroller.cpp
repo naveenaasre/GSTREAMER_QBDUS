@@ -6,6 +6,7 @@
 #include <qaudiooutput.h>
 #include <qmediaplayer.h>
 #include <QMediaPlayer>
+#include <gst/gst.h>
 
 AudioController::AudioController(QObject *parent)
     : QObject{parent}
@@ -18,48 +19,68 @@ AudioController::AudioController(QObject *parent)
 void AudioController::play(QString song)
 {
     qDebug()<<"string get from play"<<song;
-    if (mediaPlayer.state() == QMediaPlayer::PausedState) {
-        mediaPlayer.play();
+    if (!pipeline) {
+        pipeline = gst_parse_launch("playbin uri=file://" + song.toUtf8(), 0);
+
+        gst_element_set_state(pipeline, GST_STATE_PLAYING);
     } else {
-        mediaPlayer.setMedia(QUrl::fromLocalFile(song));
-        mediaPlayer.play();
+        GstState state;
+        gst_element_get_state(pipeline, &state, nullptr, GST_CLOCK_TIME_NONE);
+
+        if (state != GST_STATE_PLAYING) {
+            gst_element_set_state(pipeline, GST_STATE_PLAYING);
+        }
     }
 }
 
-void AudioController::pause()
+void AudioController::pause(QString song)
 {
-    if (mediaPlayer.state() == QMediaPlayer::PlayingState) {
-        mediaPlayer.pause();
-    }
-    qDebug()<<"string get from pause";
+    if (pipeline) {
+        GstState state;
+        gst_element_get_state(pipeline, &state, nullptr, GST_CLOCK_TIME_NONE);
+        if (state == GST_STATE_PLAYING) {
+            gst_element_set_state(pipeline, GST_STATE_PAUSED);
 
+            qDebug() << "string get from pause"<<state;
+        }else if (state == GST_STATE_PAUSED || state == GST_STATE_NULL) {
+            gst_element_set_state(pipeline, GST_STATE_PLAYING);
+            qDebug() << "Resumed / Playing";
+        }
+    }
 }
 
 void AudioController::nextsong(QString song)
 {
-    mediaPlayer.setMedia(QUrl::fromLocalFile(song));
-    if (!song.isEmpty())
-    {
-
-        mediaPlayer.play();
+    if (pipeline) {
+        gst_element_set_state(pipeline, GST_STATE_NULL);
+        gst_object_unref(pipeline);
+        pipeline = nullptr;
     }
-    qDebug() << "Playing next song";
+    GError *error = nullptr;
+    pipeline = gst_parse_launch("playbin uri=file://" + song.toUtf8(), &error);
+    gst_element_set_state(pipeline, GST_STATE_PLAYING);
+    qDebug() << "Playing next song"<<pipeline;
 }
 
 void AudioController::prevsong(QString song)
 {
-        mediaPlayer.setMedia(QUrl::fromLocalFile(song));
-        if (!song.isEmpty())
-        {
-
-            mediaPlayer.play();
-        }
-        qDebug() << "Playing previous song";
+    if (pipeline) {
+        gst_element_set_state(pipeline, GST_STATE_NULL);
+        gst_object_unref(pipeline);
+        pipeline = nullptr;
+    }
+    GError *error = nullptr;
+    pipeline = gst_parse_launch("playbin uri=file://" + song.toUtf8(), &error);
+    gst_element_set_state(pipeline, GST_STATE_PLAYING);
+    qDebug() << "Playing previous song";
 }
 
 void AudioController::stop()
 {
-
-    mediaPlayer.stop();
-    qDebug() << "stop previous song";
+    if (pipeline) {
+        gst_element_set_state(pipeline, GST_STATE_NULL);
+        gst_object_unref(pipeline);
+        pipeline = nullptr;
+        qDebug() << "stop previous song";
+    }
 }

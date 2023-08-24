@@ -1,10 +1,21 @@
 QT = core
 QT += dbus
-QT += multimedia multimediawidgets
-QT += dbus widgets
+QT += multimedia widgets
 
 CONFIG += qdbus
 CONFIG += c++17 cmdline
+CONFIG += link_pkgconfig
+
+
+LIBS += -lgstreamer-1.0
+LIBS += -lgobject-2.0
+LIBS += -lglib-2.0
+
+LIBS += -lgstbase-1.0 -lgstapp-1.0 -lgstvideo-1.0
+
+INCLUDEPATH += /usr/include/gstreamer-1.0
+INCLUDEPATH += /usr/include/glib-2.0
+INCLUDEPATH += /usr/lib/x86_64-linux-gnu/glib-2.0/include
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.

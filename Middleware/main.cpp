@@ -14,6 +14,8 @@ int main(int argc, char *argv[])
 {
     //QCoreApplication a(argc, argv);
     QApplication a(argc, argv);
+    gst_init(&argc, &argv);
+
 
     QWidget window;
     window.setGeometry(100, 100, 400, 300);
@@ -25,9 +27,6 @@ int main(int argc, char *argv[])
     QLabel label("Enjoy the Music", &window);
     label.setGeometry(100, 100, 200, 50);
     label.setAlignment(Qt::AlignCenter);
-    //    QGraphicsScene scene;
-    //    scene.setSceneRect(-500, -500, 1000, 1000);
-    //    scene.setItemIndexMethod(QGraphicsScene::NoIndex);
 
     AudioController *audioController=new AudioController();
     // scene.addItem(audioController);

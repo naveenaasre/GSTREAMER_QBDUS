@@ -5,6 +5,7 @@
                 <arg direction="in" type="s" name="song"/>
                 </method>
                 <method name="pause">
+                <arg direction="in" type="s" name="song"/>
                 </method>
                 <method name="nextsong">
                 <arg direction="in" type="s" name="songPath"/>

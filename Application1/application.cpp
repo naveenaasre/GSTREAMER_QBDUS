@@ -11,10 +11,10 @@ Application::Application(QWidget *parent)
 
     songPath <<
         "/home/navii/song.mp3"
-        << "/home/navii/song2.mp3"
-        << "/home/navii/song3.mp3"
-        << "/home/navii/song4.mp3"
-        << "/home/navii/song5.mp3";
+             << "/home/navii/song2.mp3"
+             << "/home/navii/song3.mp3"
+             << "/home/navii/song4.mp3"
+             << "/home/navii/song5.mp3";
     currentIndex = 0;
 
     app = new org::example::Examples::AppInterface("org.example.AppExample", "/App",
@@ -32,16 +32,15 @@ void Application::on_play_clicked()
 {
     song = songPath[currentIndex];
     if (currentIndex >= 0 && currentIndex < songPath.size()){
-    app->play(song);
+        app->play(song);
     }
     qDebug()<<"Play button clicked"<<song;
 }
 
-
 void Application::on_pause_clicked()
 {
 
-    app->pause();
+    app->pause(song);
 
 }
 
@@ -67,7 +66,7 @@ void Application::on_stop_clicked()
 
     if (currentIndex >= 0 && currentIndex < song.size())
     {
-    app->stop();
+        app->stop();
     }
     qDebug()<<"stop button clicked";
 
